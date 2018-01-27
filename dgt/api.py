@@ -141,7 +141,7 @@ class MessageApi():
     BATTERY = 'MSG_BATTERY'  # percent of BT battery
     UPDATE_PICO = 'MSG_UPDATE'  # User wants to update picochess
     REMOTE_ROOM = 'MSG_REMOTE_ROOM'  # User enters/leaves a remote room
-
+    DISPLAY_TEXT = 'MSG_DISPLAY_DGT_MESSAGE'
 
 class DgtApi():
 
@@ -234,7 +234,7 @@ class Message():
     BATTERY = ClassFactory(MessageApi.BATTERY, ['percent'])
     UPDATE_PICO = ClassFactory(MessageApi.UPDATE_PICO, [])
     REMOTE_ROOM = ClassFactory(MessageApi.REMOTE_ROOM, ['inside'])
-
+    DISPLAY_TEXT = ClassFactory(MessageApi.DISPLAY_TEXT, ['text'])
 
 class Event():
 

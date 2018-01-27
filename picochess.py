@@ -50,7 +50,9 @@ from dgt.display import DgtDisplay
 from dgt.board import DgtBoard
 from dgt.translate import DgtTranslate
 from dgt.menu import DgtMenu
-
+from SensorBoard import *
+#from RPIDisplay import *
+from keyboard import KeyboardInput, TerminalDisplay
 
 class AlternativeMover:
 
@@ -624,12 +626,19 @@ def main():
 
     # Launch web server
     if args.web_server_port:
+        logging.debug('Start Webserver')
         WebServer(args.web_server_port, dgtboard).start()
         dgtdispatcher.register('web')
 
     if args.console:
         logging.debug('starting PicoChess in console mode')
         RepeatedTimer(1, _dgt_serial_nr).start()  # simulate the dgtboard watchdog
+        sb = SensorBoard()
+        sb.start()
+        # rd = RpiDisplay()
+        # piDisplay().start()
+        #KeyboardInput(args.dgtpi).start()
+        BoardDisplay().start()
     else:
         # Connect to DGT board
         logging.debug('starting PicoChess in board mode')
@@ -677,6 +686,7 @@ def main():
                            home=args.engine_remote_home)
         try:
             engine_name = engine.get_name()
+
             break
         except AttributeError:
             logging.error('engine %s not started', engine_file)
@@ -984,6 +994,8 @@ def main():
                         done_move = event.move
                         brain_book = interaction_mode == Mode.BRAIN and event.inbook
                         pb_move = event.ponder if event.ponder and not brain_book else chess.Move.null()
+                        print("Computer Move %s",event.move)
+                        print(game_copy)
                 else:
                     logging.warning('wrong function call [best]! mode: %s turn: %s', interaction_mode, game.turn)
 

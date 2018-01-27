@@ -262,6 +262,7 @@ class WebVr(DgtIface):
         self._create_clock_text()
         self.shared['clock_text'] = text
         result = {'event': 'Clock', 'msg': text}
+        DisplayMsg.show(Message.DISPLAY_TEXT(text=result))
         EventHandler.write_to_clients(result)
         return True
 
@@ -280,6 +281,7 @@ class WebVr(DgtIface):
         self._create_clock_text()
         self.shared['clock_text'] = text
         result = {'event': 'Clock', 'msg': text}
+        DisplayMsg.show(Message.DISPLAY_TEXT(text=result))
         EventHandler.write_to_clients(result)
         return True
 
