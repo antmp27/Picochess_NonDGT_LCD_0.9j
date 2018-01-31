@@ -82,15 +82,17 @@ class SensorBoard(Observable, threading.Thread):
                         #         raise ValueError(fen)
                         # Here starts the simulation of a dgt-board!
                         # Let the user send events like the board would do
-                        # elif cmd.startswith('fen:'):
-                        #     fen = cmd.split(':')[1]
-                        #     # dgt board only sends the basic fen => be sure
-                        #     # it's same no matter what fen the user entered
-                        #     self.fire(Event.DGT_FEN(fen=fen.split(' ')[0]))
-                        if cmd.startswith('b:'):
+                        if cmd.startswith('FEN:'):
+                            fen = cmd.split(':')[1]
+                            # dgt board only sends the basic fen => be sure
+                            # it's same no matter what fen the user entered
+                            self.fire(Event.FEN(fen=fen.split(' ')[0]))
+                        elif cmd.startswith('b:'):
                             button = int(cmd.split(':')[1])
-                            if button not in range(5):
+                            if button not in range(6):
                                 raise ValueError(button)
+                            if button==5:
+                                button=0x40
                             self.fire(Event.KEYBOARD_BUTTON(button=button, dev = 'ser'))
 
                         elif cmd.startswith('l:'):
@@ -103,7 +105,9 @@ class SensorBoard(Observable, threading.Thread):
                         #elif cmd.startswith("tb:"):
                         #   self.fire(Event.TAKE_BACK())
                         elif cmd.startswith('shutdown'):
-                            self.fire(Event.SHUTDOWN())
+                            self.fire(Event.SHUTDOWN(dev='ser'))
+                        elif cmd.startswith('reboot'):
+                            self.fire(Event.REBOOT(dev='ser'))
                         elif cmd.startswith('done'):
                             print("ComputerMove done on board")
                             if keyboard_last_fen is not None:
